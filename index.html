@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Darren</title>
+    <script>
+        document.documentElement.classList.remove('no-js');
+        document.documentElement.classList.add('js');
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Profile Picture Style */
+        .profile-pic-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .profile-pic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .modal-content, .close {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .skill-bars {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin: 10px; /* Center the skill bars container */
+    justify-content: space-between; /* Space items evenly */
+    max-width: 800px; /* Set a max-width to control the container's width */
+}
+
+.skill-bars ul {
+    display: flex;
+    align-items: center;
+    margin: 10px 0; /* Add vertical margin */
+    width: 45%; /* Adjust the width to control the column width */
+}
+
+.skill-bars li strong {
+    width: 30%; /* Adjust width for text label */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.skill-bars .progress {
+    width: 70%; /* Adjust width for progress bar */
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    position: relative;
+}
+
+.skill-bars .progress:before {
+    content: '';
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #3498db; /* Progress bar color */
+    width: var(--progress-width);
+}
+
+.percent95:before { --progress-width: 95%; }
+.percent85:before { --progress-width: 85%; }
+.percent90:before { --progress-width: 90%; }
+    </style>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+<body id="top">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="loader" class="line"></div>
+    </div>
+    <!-- Page Wrap -->
+    <div id="page" class="s-pagewrap">
+        <!-- Site Header -->
+        <header id="masthead" class="s-header">
+            <div class="s-header__block">
+                <div class="s-header__branding">
+                    <p class="site-title"><a href="index.html" rel="home">Darren Bonjour.</a></p>
+                </div>
+                <a class="s-header__menu-toggle" href="#0"><span>Menu</span></a>
+            </div>
+            <div class="row s-header__nav-wrap">
+                <nav class="s-header__nav">
+                    <ul>
+                        <li class="current"><a href="#intro" class="smoothscroll">Intro</a></li>
+                        <li><a href="#about" class="smoothscroll">About</a></li>
+                        <li><a href="#works" class="smoothscroll">Works</a></li>
+                        <li><a href="#colophon" class="smoothscroll">Contact</a></li>
+                    </ul>
+                </nav>
+                <ul class="s-header__social">
+                    <li>
+                        <a href="https://www.linkedin.com/in/darren-bonjour03/" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.794-1.75-1.732s.784-1.732 1.75-1.732c.966 0 1.75.794 1.75 1.732s-.784 1.732-1.75 1.732zm13.5 12.268h-3v-5.5c0-1.378-1.121-2.5-2.5-2.5s-2.5 1.122-2.5 2.5v5.5h-3v-11h3v1.732c.653-.956 1.72-1.732 2.968-1.732 2.481 0 4.532 2.05 4.532 4.5v6.5z"/>
+                            </svg>
+                            <span class="u-screen-reader-text">LinkedIn</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/darrenbon03" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:">
+                                <path d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"></path>
+                            </svg>
+                            <span class="u-screen-reader-text">GitHub</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <!-- Intro -->
+        <section id="intro" class="s-intro">
+            <div class="row">
+                <div class="column lg-12 s-intro__content">
+                    <div class="s-intro__text">
+                        <h1 class="s-intro__text-huge animate-on-load" style="color: black;">Darren</h1>
+                        <h3 class="animate-on-load" style="color: black;">Developer</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About -->
+        <section id="about" class="s-about">
+           <div class="s-about__block s-about__intro">
+                <div class="row">
+                    <div class="column lg-12">
+                        <h2 class="text-pretitle animate-on-load">About Me</h2>
+                        <p class="attention-getter animate-on-load">
+                            Aspiring to harness my passion for problem-solving and innovation, I aim to establish myself as a dedicated software engineer, utilizing my skills to build transformative digital solutions.
+                        </p>
+                        <div class="profile-pic-wrapper">
+                            <img id="myProfilePic" src="images/portfolio/db.jpg" alt="Darren's Profile Picture" class="profile-pic">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- The Modal -->
+            <div id="cvModal" class="modal">
+                <span class="close">&times;</span>
+                <embed id="resumePDF" class="modal-content" type="application/pdf">
+            </div>
+            <!-- Resume -->
+            <div class="s-about__block s-about__career">
+                <div class="row s-about__career-header">
+                    <div class="column lg-12">
+                        <h2 class="text-pretitle">Resume</h2>
+                        <p class="text-huge-title">Here is my education, work experience, & some skills I've got.</p>
+                    </div>
+                </div>
+                <div class="row s-about__timeline" data-animate-block>
+                    <div class="column lg-6 stack-on-900 s-about__timeline-section" data-animate-el>
+                        <h2 class="text-subtitle">Experience</h2>
+                        <div class="timeline">
+                            <div class="timeline__block">
+                                <div class="timeline__bullet"></div>
+                                <div class="timeline__header">
+                                    <h4 class="timeline__title">HeadStarter AI</h4>
+                                    <h5 class="timeline__meta">SWE Intern</h5>
+                                    <p class="timeline__timeframe">June 2024 - Present</p>
+                                </div>
+                                <div class="timeline__desc">
+                                    <p>As a Software Engineering Intern at HeadStarter AI, I developed and implemented five AI projects, demonstrating expertise in machine learning, data analysis, and algorithm optimization. I participated in weekend hackathons, collaborating with peers to create innovative solutions under tight deadlines. My final project involved taking a startup’s current backlog and building a solution that met all business requirements, resulting in a functional product with over 1000 users. I engaged in AI coaching calls, mock interviews, and resume reviews, receiving feedback from industry professionals to enhance both technical and soft skills. Additionally, I contributed to peer feedback sessions and team evaluations, fostering a collaborative and growth-oriented environment.</p>
+                                </div>
+                            </div>
+                            <div class="timeline__block">
+                                <div class="timeline__bullet"></div>
+                                <div class="timeline__header">
+                                    <h4 class="timeline__title">Outlier AI</h4>
+                                    <h5 class="timeline__meta">Ai Coder</h5>
+                                    <p class="timeline__timeframe">May 2024 - Present</p>
+                                </div>
+                                <div class="timeline__desc">
+                                    <p>As an AI Coder at Outlier AI, I contribute to the training and evaluation of AI models, focusing on improving their coding capabilities. My responsibilities include evaluating the quality of AI-generated code, providing detailed summaries and feedback, and writing robust test cases to ensure code functionality and efficiency. I solve complex coding problems, writing functional and efficient code across languages such as Java & Python. This role has enhanced my attention to detail and ability to articulate complex scientific concepts clearly while working remotely on innovative projects in the AI space.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column lg-6 stack-on-900 s-about__timeline-section" data-animate-el>
+                        <h2 class="text-subtitle">Education</h2>
+                        <div class="timeline">
+                            <div class="timeline__block">
+                                <div class="timeline__bullet"></div>
+                                <div class="timeline__header">
+                                    <h4 class="timeline__title">Rutgers University</h4>
+                                    <h5 class="timeline__meta">Bachelor's of Arts</h5>
+                                    <p class="timeline__timeframe">May 2025</p>
+                                </div>
+                                <div class="timeline__desc">
+                                    <p>As a computer science student at Rutgers University, I have developed a strong foundation in software engineering principles, programming languages, and algorithm design. My coursework has covered a range of topics including data structures, artificial intelligence, and software development. Throughout my studies, I have demonstrated a commitment to academic excellence, achieving a 3.5 GPA while balancing a rigorous schedule. In addition to my academic pursuits, I have been actively involved in the university's competitive Call of Duty team, where I served as captain, managed social media presence, and coordinated team activities. My experience at Rutgers has equipped me with the technical skills and leadership abilities necessary to excel in the field of computer science.</p>
+                                </div>
+                            </div>
+                            
+                </div>
+                <div class="row s-about__skills" data-animate-block>
+                    <div class="column lg-12" data-animate-el>
+                        <h2 class="text-subtitle">Skills & Expertise</h2>
+                        <div class="skills-container">
+                            <ul class="skill-bars">
+                                <li><div class="progress percent95"></div><strong>Java</strong></li>
+                                <li><div class="progress percent85"></div><strong>C</strong></li>
+                                <li><div class="progress percent90"></div><strong>Python</strong></li>
+                                <li><div class="progress percent90"></div><strong>HTML/C++</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- Works -->
+        <section id="works" class="s-works">
+            <div class="row">
+                <div class="column lg-12">
+                    <h2 class="text-pretitle">Selected Projects</h2>
+                    <p class="text-huge-title">Selected Projects I Have Worked On.</p>
+                </div>
+            </div>
+            <div class="row folio-list block-lg-one-half block-stack-on-550" data-animate-block>
+                <div class="column" data-animate-el>
+                    <div class="folio-item">
+                        <div class="folio-item__thumb">
+                            <a class="folio-item__thumb-link" href="images/portfolio/prereq.webp" title="Prereq App" data-size="1050x700">
+                                <img src="images/portfolio/prereq.webp" srcset="images/portfolio/prereq.webp 1x, images/portfolio/prereq.webp 2x" alt="">
+                            </a>
+                        </div>
+                        <div class="folio-item__info">
+                            <div class="folio-item__meta">
+                                <span class="cat">Coding Project</span>
+                                <a href="https://github.com/darrenbon03/Pre-Req-Checker" title="Project Link" class="project-link">Project Link</a>
+                            </div>
+                            <h4 class="folio-item__title">Course Prerequisite Mapper</h4>
+                        </div>
+                        <div class="folio-item__caption">
+                            <p>Developed a comprehensive tool to navigate and manage the complex prerequisite structure of the Rutgers Computer Science
+                                program’s course offerings, utilizing Directed Acyclic Graphs (DAG) to represent course relationships.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" data-animate-el>
+                    <div class="folio-item">
+                        <div class="folio-item__thumb">
+                            <a class="folio-item__thumb-link" href="images/portfolio/hg.webp" title="Hunger Games" data-size="1050x700">
+                                <img src="images/portfolio/hg.webp" srcset="images/portfolio/hg.webp 1x, images/portfolio/hg@2x.webp" alt="">
+                            </a>
+                        </div>
+                        <div class="folio-item__info">
+                            <div class="folio-item__meta">
+                                <span class="cat">Coding Project</span>
+                                <a href="https://github.com/darrenbon03/Hunger-Games-Simulation" title="Project Link" class="project-link">Project Link</a>
+                            </div>
+                            <h4 class="folio-item__title">Hunger Games Simulation</h4>
+                        </div>
+                        <div class="folio-item__caption">
+                            <p>Implemented a simulation using Binary Search Trees to manage participant data, enhancing data management efficiency and
+                                supporting dynamic interactions within the game.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" data-animate-el>
+                    <div class="folio-item">
+                        <div class="folio-item__thumb">
+                            <a class="folio-item__thumb-link" href="images/portfolio/mp.webp" title="Music Playlist" data-size="1050x700">
+                                <img src="images/portfolio/mp.webp" srcset="images/portfolio/mp.webp 1x, images/portfolio/mp@2x.webp 2x" alt="">
+                            </a>
+                        </div>
+                        <div class="folio-item__info">
+                            <div class="folio-item__meta">
+                                <span class="cat">Coding Project</span>
+                                <a href="https://github.com/darrenbon03/Music-Playlist" title="Project Link" class="project-link">Project Link</a>
+                            </div>
+                            <h4 class="folio-item__title">Music Playlist</h4>
+                        </div>
+                        <div class="folio-item__caption">
+                            <p>Created a streaming application similar to Spotify, using Circular Linked Lists for efficient playlist management,
+                                demonstrating skills in advanced data structures and OOP.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column" data-animate-el>
+                    <div class="folio-item">
+                        <div class="folio-item__thumb">
+                            <a class="folio-item__thumb-link" href="images/portfolio/mx.webp" title="Caffein & Tulips" data-size="1050x700">
+                                <img src="images/portfolio/mx.webp" srcset="images/portfolio/mx.webp jpg 1x, images/portfolio/mx.webp 2x" alt="">
+                            </a>
+                        </div>
+                        <div class="folio-item__info">
+                            <div class="folio-item__meta">
+                                <span class="cat">Coding Project</span>
+                                <a href="https://github.com/darrenbon03/Data-Representation" title="Project Link" class="project-link">Project Link</a>
+                            </div>
+                            <h4 class="folio-item__title">Optimized Matrix Operations for Enhanced Performance</h4>
+                        </div>
+                        <div class="folio-item__caption">
+                            <p>In this project, I optimized matrix operations to improve cache locality, significantly enhancing computational performance. The project focused on two main tasks: matrix addition and matrix multiplication, with the goal of reducing cache misses and evictions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Site Footer -->
+        <footer id="colophon" class="s-footer">
+            <div class="row s-footer__contact-header">
+                <div class="column lg-12">
+                    <h2 class="text-pretitle">Get In Touch</h2>
+                    <p class="text-huge-title">Feel free to reach out if you wanna collaborate with me, or simply have a chat.</p>
+                </div>
+            </div>
+            <div class="row s-footer__contact-content">
+                <div class="column lg-5 md-6 stack-on-900 left-block">
+                    <p>
+                        I'm always open to new opportunities and collaborations. Whether you're interested in discussing a potential project, seeking advice on a technical issue, or just want to chat about the latest in software development, I'm here to help. Feel free to reach out through any of the provided contact methods, and I'll get back to you as soon as possible.
+                    <div class="s-footer__buttons">
+                        <a href="contact.html" class="btn btn--primary u-fullwidth" target="_blank">Say Hello</a>
+                        <a href="#0" class="btn btn--stroke u-fullwidth" id="getCvBtn">Get My CV</a>
+                    </div>
+                    </p>
+                </div>
+                <div class="column lg-4 md-5 stack-on-900 right-block">
+                    <div class="s-footer__contact-info">
+                        <h2 class="text-subtitle">Start A Project</h2>
+                        <ul class="link-list">
+                            <li><a href="mailto:darrenbonjour92@gmail.com">darrenbonjour92@gmail.com</a></li>
+                            <li><a href="tel:+12016576254">+1 201-657-6254</a></li>
+                        </ul>
+                    </div>
+                    <div class="s-footer__social">
+                        <h2 class="text-subtitle">Connect</h2>
+                        <ul class="link-list">
+                            <li><a href="https://www.linkedin.com/in/darren-bonjour03/" target="_blank">Linkedin</a></li>
+                            <li><a href="https://github.com/darrenbon03" target="_blank">Github</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+           
+                <div class="ss-go-top">
+                    <a class="smoothscroll" title="Back to Top" href="#top">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M6 4h12v2H6zm5 10v6h2v-6h5l-6-6-6 6z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- PhotoSwipe Background -->
+    <div aria-hidden="true" class="pswp" role="dialog" tabindex="-1">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript -->
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Get the modal
+        var cvModal = document.getElementById("cvModal");
+
+        // Get the "Get My CV" button and set its click event
+        var getCvBtn = document.getElementById("getCvBtn");
+        getCvBtn.onclick = function(){
+            cvModal.style.display = "block";
+            cvModal.style.height = "100%"; // Set the modal height to 100%
+            resumePDF.src = "images/portfolio/CS_RESUME_2_0.pdf"; // Change to the path of your resume PDF
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close");
+
+        // When the user clicks on <span> (x), close the modal
+        for(var i = 0; i < span.length; i++) {
+            span[i].onclick = function() {
+                this.parentElement.style.display = "none";
+            }
+        }
+
+        // Close the modal when the user clicks outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == cvModal) {
+                cvModal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
