@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="js dark-theme">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,10 +12,6 @@
             color: #e0e0e0;
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         }
-        .dark-theme {
-            background: #181a1b;
-            color: #e0e0e0;
-        }
         a, a:visited, .btn--primary {
             color: #64ffda;
         }
@@ -24,6 +20,10 @@
             border: 1px solid #64ffda;
             color: #64ffda;
             transition: background 0.2s, color 0.2s;
+            padding: 0.7em 2em;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 1em;
         }
         .btn--primary:hover {
             background: #64ffda;
@@ -33,6 +33,9 @@
             border: 1px solid #64ffda;
             color: #64ffda;
             background: transparent;
+            padding: 0.7em 2em;
+            border-radius: 6px;
+            font-weight: 600;
         }
         .btn--stroke:hover {
             background: #64ffda;
@@ -79,13 +82,41 @@
             padding: 0.5em 1em;
             color: #e0e0e0;
         }
+        .skill-bars {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0;
+            margin: 10px auto;
+            justify-content: flex-start;
+            max-width: 800px;
+        }
+        .skill-bars li {
+            width: 45%;
+            margin: 0.5em 2.5%;
+        }
         .progress {
+            width: 70%;
+            height: 8px;
             background: #333b3d;
+            border-radius: 4px;
+            position: relative;
+            display: inline-block;
+            margin-right: 1em;
         }
         .progress:before {
+            content: '';
+            display: block;
+            height: 100%;
+            border-radius: 4px;
             background: #64ffda;
+            width: var(--progress-width);
         }
-        .s-header__nav ul li a, .s-header__social svg {
+        .percent95:before { --progress-width: 95%; }
+        .percent90:before { --progress-width: 90%; }
+        .percent85:before { --progress-width: 85%; }
+        .percent80:before { --progress-width: 80%; }
+        .s-header__nav ul li a {
             color: #64ffda !important;
         }
         .s-header__branding .site-title a {
@@ -101,10 +132,6 @@
         .folio-item__title, .timeline__title, .text-huge-title, .text-pretitle {
             color: #64ffda;
         }
-        .modal-content {
-            background: #23272a;
-        }
-        /* Animations */
         .animate-on-load {
             opacity: 0;
             transform: translateY(30px);
@@ -116,13 +143,16 @@
                 transform: none;
             }
         }
+        @media (max-width: 900px) {
+            .skill-bars li { width: 100%; margin: 0.5em 0; }
+        }
     </style>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
 </head>
-<body id="top" class="dark-theme">
+<body id="top">
     <div id="page" class="s-pagewrap">
         <!-- Header -->
         <header id="masthead" class="s-header">
