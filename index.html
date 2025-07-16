@@ -1,378 +1,348 @@
-/* ===================================================================
- * Augustine 1.0.0 - Main JS
- *
- *
- * ------------------------------------------------------------------- */
-
-(function(html) {
-
-    'use strict';
-
-
-    /* animations
-    * -------------------------------------------------- */
-    const tl = anime.timeline( {
-        easing: 'easeInOutCubic',
-        duration: 800,
-        autoplay: false
-    })
-    .add({
-        targets: '#loader',
-        opacity: 0,
-        duration: 1000,
-        begin: function(anim) {
-            window.scrollTo(0, 0);
+<!DOCTYPE html>
+<html lang="en" class="js dark-theme">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Darren Bonjour | Software Engineer</title>
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body, html {
+            background: #181a1b;
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         }
-    })
-    .add({
-        targets: '#preloader',
-        opacity: 0,
-        complete: function(anim) {
-            document.querySelector("#preloader").style.visibility = "hidden";
-            document.querySelector("#preloader").style.display = "none";
+        .dark-theme {
+            background: #181a1b;
+            color: #e0e0e0;
         }
-    })
-    .add({
-        targets: '.s-header',
-        translateY: [-100, 0],
-        opacity: [0, 1]
-    }, '-=200')
-    .add({
-        targets: '.s-intro__bg',
-        opacity: [0, 1],
-        duration: 1000,
-    })
-    .add({
-        targets: ['.animate-on-load'],
-        translateY: [100, 0],
-        opacity: [0, 1],
-        delay: anime.stagger(400)
-    });
-
-
-
-   /* preloader
-    * -------------------------------------------------- */
-    const ssPreloader = function() {
-
-        const preloader = document.querySelector('#preloader');
-        if (!preloader) return;
-
-        html.classList.add('ss-preload');
-        
-        window.addEventListener('load', function() {
-            html.classList.remove('ss-preload');
-            html.classList.add('ss-loaded');
-            tl.play();
-        });
-
-    }; // end ssPreloader
-
-
-
-   /* mobile menu
-    * ---------------------------------------------------- */ 
-    const ssMobileMenu = function() {
-
-        const toggleButton = document.querySelector('.s-header__menu-toggle');
-        const mainNavWrap = document.querySelector('.s-header__nav-wrap');
-        const siteBody = document.querySelector('body');
-
-        if (!(toggleButton && mainNavWrap)) return;
-
-        toggleButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            toggleButton.classList.toggle('is-clicked');
-            siteBody.classList.toggle('menu-is-open');
-        });
-
-        mainNavWrap.querySelectorAll('.s-header__nav a').forEach(function(link) {
-
-            link.addEventListener("click", function(e) {
-
-                // at 900px and below
-                if (window.matchMedia('(max-width: 900px)').matches) {
-                    toggleButton.classList.toggle('is-clicked');
-                    siteBody.classList.toggle('menu-is-open');
-                }
-            });
-        });
-
-        window.addEventListener('resize', function() {
-
-            // above 900px
-            if (window.matchMedia('(min-width: 901px)').matches) {
-                if (siteBody.classList.contains('menu-is-open')) siteBody.classList.remove('menu-is-open');
-                if (toggleButton.classList.contains('is-clicked')) toggleButton.classList.remove('is-clicked');
-            }
-        });
-
-    }; // end ssMobileMenu
-
-
-
-   /* sticky header
-    * ------------------------------------------------------ */
-    const ssStickyHeader = function() {
-
-        const hdr = document.querySelector('.s-header');
-        if (!hdr) return;
-
-        // const triggerHeight = window.pageYOffset + hdr.getBoundingClientRect().top;
-        const triggerHeight = 1;
-
-        window.addEventListener('scroll', function () {
-
-            let loc = window.scrollY;
-
-            if (loc > triggerHeight) {
-                hdr.classList.add('sticky');
-            } else {
-                hdr.classList.remove('sticky');
-            }
-
-        });
-
-    }; // end ssStickyHeader
-
-
-
-   /* photoswipe
-    * ----------------------------------------------------- */
-    const ssPhotoswipe = function() {
-
-        const items = [];
-        const pswp = document.querySelectorAll('.pswp')[0];
-        const folioItems = document.querySelectorAll('.folio-item');
-
-        if (!(pswp && folioItems)) return;
-
-        folioItems.forEach(function(folioItem) {
-
-            let folio = folioItem;
-            let thumbLink = folio.querySelector('.folio-item__thumb-link');
-            let title = folio.querySelector('.folio-item__title');
-            let caption = folio.querySelector('.folio-item__caption');
-            let titleText = '<h4>' + title.innerHTML + '</h4>';
-            let captionText = caption.innerHTML;
-            let href = thumbLink.getAttribute('href');
-            let size = thumbLink.dataset.size.split('x'); 
-            let width  = size[0];
-            let height = size[1];
-
-            let item = {
-                src  : href,
-                w    : width,
-                h    : height
-            }
-
-            if (caption) {
-                item.title = titleText.trim() + captionText.trim();
-            }
-
-            items.push(item);
-
-        });
-
-        // bind click event
-        folioItems.forEach(function(folioItem, i) {
-
-            let thumbLink = folioItem.querySelector('.folio-item__thumb-link');
-
-            thumbLink.addEventListener('click', function(e) {
-
-                e.preventDefault();
-
-                let options = {
-                    index: i,
-                    showHideOpacity: true
-                }
-
-                // initialize PhotoSwipe
-                let lightBox = new PhotoSwipe(pswp, PhotoSwipeUI_Default, items, options);
-                lightBox.init();
-            });
-
-        });
-
-    };  // end ssPhotoSwipe
-
-
-
-   /* animate elements if in viewport
-    * ------------------------------------------------------ */
-    const ssAnimateOnScroll = function() {
-
-        const blocks = document.querySelectorAll('[data-animate-block]');
-
-        window.addEventListener('scroll', animateOnScroll);
-
-        function animateOnScroll() {
-
-            let scrollY = window.pageYOffset;
-
-            blocks.forEach(function(current) {
-
-                const viewportHeight = window.innerHeight;
-                const triggerTop = (current.offsetTop + (viewportHeight * .1)) - viewportHeight;
-                const blockHeight = current.offsetHeight;
-                const blockSpace = triggerTop + blockHeight;
-                const inView = scrollY > triggerTop && scrollY <= blockSpace;
-                const isAnimated = current.classList.contains('ss-animated');
-
-                if (inView && (!isAnimated)) {
-
-                    anime({
-                        targets: current.querySelectorAll('[data-animate-el]'),
-                        opacity: [0, 1],
-                        translateY: [100, 0],
-                        delay: anime.stagger(200, {start: 200}),
-                        duration: 600,
-                        easing: 'easeInOutCubic',
-                        begin: function(anim) {
-                            current.classList.add('ss-animated');
-                        }
-                    });
-                }
-            });
+        a, a:visited, .btn--primary {
+            color: #64ffda;
         }
-
-    }; // end ssAnimateOnScroll
-
-
-
-   /* swiper
-    * ------------------------------------------------------ */ 
-    const ssSwiper = function() {
-
-        const mySwiper = new Swiper('.swiper', {
-
-            slidesPerView: 1,
-            effect: 'slide',
-            spaceBetween: 160,
-            centeredSlides: true,
-            speed: 1000,
-            navigation: {
-                nextEl: ".testimonial-slider__next",
-                prevEl: ".testimonial-slider__prev",
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            }
-
-        });
-
-    }; // end ssSwiper
-
-
-
-   /* alert boxes
-    * ------------------------------------------------------ */
-    const ssAlertBoxes = function() {
-
-        const boxes = document.querySelectorAll('.alert-box');
-  
-        boxes.forEach(function(box){
-
-            box.addEventListener('click', function(e) {
-                if (e.target.matches('.alert-box__close')) {
-                    e.stopPropagation();
-                    e.target.parentElement.classList.add('hideit');
-
-                    setTimeout(function(){
-                        box.style.display = 'none';
-                    }, 500)
-                }
-            });
-        })
-
-    }; // end ssAlertBoxes
-
-
-
-    /* back to top
-    * ------------------------------------------------------ */
-    const ssBackToTop = function() {
-
-        const pxShow = 900;
-        const goTopButton = document.querySelector(".ss-go-top");
-
-        if (!goTopButton) return;
-
-        // Show or hide the button
-        if (window.scrollY >= pxShow) goTopButton.classList.add("link-is-visible");
-
-        window.addEventListener('scroll', function() {
-            if (window.scrollY >= pxShow) {
-                if(!goTopButton.classList.contains('link-is-visible')) goTopButton.classList.add("link-is-visible")
-            } else {
-                goTopButton.classList.remove("link-is-visible")
-            }
-        });
-
-    }; // end ssBackToTop
-
-
-
-   /* smoothscroll
-    * ------------------------------------------------------ */
-    const ssMoveTo = function(){
-
-        const easeFunctions = {
-            easeInQuad: function (t, b, c, d) {
-                t /= d;
-                return c * t * t + b;
-            },
-            easeOutQuad: function (t, b, c, d) {
-                t /= d;
-                return -c * t* (t - 2) + b;
-            },
-            easeInOutQuad: function (t, b, c, d) {
-                t /= d/2;
-                if (t < 1) return c/2*t*t + b;
-                t--;
-                return -c/2 * (t*(t-2) - 1) + b;
-            },
-            easeInOutCubic: function (t, b, c, d) {
-                t /= d/2;
-                if (t < 1) return c/2*t*t*t + b;
-                t -= 2;
-                return c/2*(t*t*t + 2) + b;
+        .btn--primary {
+            background: #23272a;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn--primary:hover {
+            background: #64ffda;
+            color: #181a1b;
+        }
+        .btn--stroke {
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            background: transparent;
+        }
+        .btn--stroke:hover {
+            background: #64ffda;
+            color: #181a1b;
+        }
+        .profile-pic-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 160px;
+            height: 160px;
+            border: 4px solid #64ffda;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .profile-pic:hover {
+            transform: scale(1.07);
+            box-shadow: 0 8px 40px #64ffda44;
+        }
+        .section-title {
+            color: #64ffda;
+            font-size: 2.2rem;
+            margin-bottom: 0.5em;
+        }
+        .attention-getter {
+            font-size: 1.2rem;
+            color: #b2dfdb;
+        }
+        .timeline__block, .folio-item {
+            background: #23272a;
+            border-radius: 10px;
+            margin-bottom: 1.5em;
+            padding: 1.2em 1.5em;
+            box-shadow: 0 2px 12px #0004;
+        }
+        .skills-container ul.skill-bars li {
+            background: #23272a;
+            border-radius: 6px;
+            margin-bottom: 0.7em;
+            padding: 0.5em 1em;
+            color: #e0e0e0;
+        }
+        .progress {
+            background: #333b3d;
+        }
+        .progress:before {
+            background: #64ffda;
+        }
+        .s-header__nav ul li a, .s-header__social svg {
+            color: #64ffda !important;
+        }
+        .s-header__branding .site-title a {
+            color: #64ffda;
+        }
+        .s-footer, .s-footer__contact-header, .s-footer__contact-content {
+            background: #181a1b;
+            color: #e0e0e0;
+        }
+        .s-footer__social a {
+            color: #64ffda;
+        }
+        .folio-item__title, .timeline__title, .text-huge-title, .text-pretitle {
+            color: #64ffda;
+        }
+        .modal-content {
+            background: #23272a;
+        }
+        /* Animations */
+        .animate-on-load {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: none;
             }
         }
-
-        const triggers = document.querySelectorAll('.smoothscroll');
-        
-        const moveTo = new MoveTo({
-            tolerance: 0,
-            duration: 1200,
-            easing: 'easeInOutCubic',
-            container: window
-        }, easeFunctions);
-
-        triggers.forEach(function(trigger) {
-            moveTo.registerTrigger(trigger);
-        });
-
-    }; // end ssMoveTo
-
-
-
-   /* initialize
-    * ------------------------------------------------------ */
-    (function ssInit() {
-
-        ssPreloader();
-        ssMobileMenu();
-        ssStickyHeader();
-        ssPhotoswipe();
-        ssAnimateOnScroll();
-        ssSwiper();
-        ssAlertBoxes();
-        ssBackToTop();
-        ssMoveTo();
-
-    })();
-
-})(document.documentElement);
+    </style>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+<body id="top" class="dark-theme">
+    <div id="page" class="s-pagewrap">
+        <!-- Header -->
+        <header id="masthead" class="s-header">
+            <div class="s-header__block">
+                <div class="s-header__branding">
+                    <p class="site-title"><a href="#top">Darren Bonjour</a></p>
+                </div>
+                <a class="s-header__menu-toggle" href="#0"><span>Menu</span></a>
+            </div>
+            <div class="row s-header__nav-wrap">
+                <nav class="s-header__nav">
+                    <ul>
+                        <li class="current"><a href="#hero" class="smoothscroll">Home</a></li>
+                        <li><a href="#about" class="smoothscroll">About</a></li>
+                        <li><a href="#experience" class="smoothscroll">Experience</a></li>
+                        <li><a href="#skills" class="smoothscroll">Skills</a></li>
+                        <li><a href="#projects" class="smoothscroll">Projects</a></li>
+                        <li><a href="#contact" class="smoothscroll">Contact</a></li>
+                    </ul>
+                </nav>
+                <ul class="s-header__social">
+                    <li><a href="https://www.linkedin.com/in/darren-bonjour03/" target="_blank">LinkedIn</a></li>
+                    <li><a href="https://github.com/darrenbon03" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+        </header>
+        <!-- Hero Section -->
+        <section id="hero" class="s-intro">
+            <div class="row">
+                <div class="column lg-12 s-intro__content">
+                    <div class="profile-pic-wrapper">
+                        <img src="images/portfolio/db.jpg" alt="Darren Bonjour profile picture" class="profile-pic animate-on-load">
+                    </div>
+                    <div class="s-intro__text">
+                        <h1 class="s-intro__text-huge animate-on-load">Darren Bonjour</h1>
+                        <h3 class="animate-on-load">Software Engineer | Building robust, scalable solutions</h3>
+                        <p class="attention-getter animate-on-load">Computer Science graduate with a strong foundation in C++, Python, and Java. Experienced in designing, testing, and optimizing backend systems. Skilled at translating technical requirements into high-quality, scalable solutions. Passionate about building efficient software and solving complex problems.</p>
+                        <div style="margin-top: 1.5em;">
+                            <a href="CS_RESUMESWE(1).pdf" class="btn btn--primary" target="_blank">Download Resume (PDF)</a>
+                            <a href="#contact" class="btn btn--stroke smoothscroll">Contact Me</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About Section -->
+        <section id="about" class="s-about">
+            <div class="row">
+                <div class="column lg-12">
+                    <h2 class="section-title animate-on-load">About Me</h2>
+                    <p class="animate-on-load">I'm a Computer Science graduate from Rutgers University (GPA: 3.45), with a passion for backend systems, algorithms, and building impactful software. My academic journey and hands-on experience have equipped me with the technical and leadership skills to excel in software engineering roles.</p>
+                    <ul class="animate-on-load">
+                        <li><strong>Education:</strong> Rutgers University, B.A. in Computer Science, 2021–2025</li>
+                        <li><strong>Relevant Coursework:</strong> Operating Systems, Data Structures, Algorithms, Systems Programming, Computer Architecture, Internet Technology</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- Experience Section -->
+        <section id="experience" class="s-about">
+            <div class="row">
+                <div class="column lg-12">
+                    <h2 class="section-title animate-on-load">Experience</h2>
+                    <div class="timeline__block animate-on-load">
+                        <div class="timeline__header">
+                            <h4 class="timeline__title">Headstarter AI</h4>
+                            <h5 class="timeline__meta">Software Engineering Fellow</h5>
+                            <p class="timeline__timeframe">June 2024 – Sept. 2024</p>
+                        </div>
+                        <div class="timeline__desc">
+                            <ul>
+                                <li>Built internal tools to parse large-scale datasets using Python, optimizing algorithms for data efficiency.</li>
+                                <li>Designed modular, high-performance API services.</li>
+                                <li>Contributed to code reviews, test automation, and iterative deployment cycles.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline__block animate-on-load">
+                        <div class="timeline__header">
+                            <h4 class="timeline__title">Outlier AI</h4>
+                            <h5 class="timeline__meta">AI Coder / Technical Analyst</h5>
+                            <p class="timeline__timeframe">May 2024 – Dec. 2024</p>
+                        </div>
+                        <div class="timeline__desc">
+                            <ul>
+                                <li>Developed and optimized C++ modules for high-throughput applications; validated performance with profiling tools.</li>
+                                <li>Documented complex software logic and testing plans; resolved 40+ edge-case bugs.</li>
+                                <li>Collaborated cross-functionally to deploy robust features to production.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline__block animate-on-load">
+                        <div class="timeline__header">
+                            <h4 class="timeline__title">Rutgers IT Help Desk</h4>
+                            <h5 class="timeline__meta">Technical Support Assistant</h5>
+                            <p class="timeline__timeframe">Sept. 2022 – May 2023</p>
+                        </div>
+                        <div class="timeline__desc">
+                            <ul>
+                                <li>Provided technical support for 100+ students and faculty, resolving account, software, and connectivity issues.</li>
+                                <li>Documented issue resolutions and escalated recurring problems to engineering teams.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Skills Section -->
+        <section id="skills" class="s-about">
+            <div class="row">
+                <div class="column lg-12">
+                    <h2 class="section-title animate-on-load">Skills</h2>
+                    <ul class="skill-bars animate-on-load">
+                        <li><div class="progress percent95"></div><strong>C++</strong></li>
+                        <li><div class="progress percent90"></div><strong>Python</strong></li>
+                        <li><div class="progress percent90"></div><strong>Java</strong></li>
+                        <li><div class="progress percent85"></div><strong>SQL</strong></li>
+                        <li><div class="progress percent85"></div><strong>Bash</strong></li>
+                        <li><div class="progress percent90"></div><strong>Linux/UNIX</strong></li>
+                        <li><div class="progress percent85"></div><strong>Docker</strong></li>
+                        <li><div class="progress percent85"></div><strong>Git</strong></li>
+                        <li><div class="progress percent80"></div><strong>VS Code</strong></li>
+                        <li><div class="progress percent80"></div><strong>Jupyter</strong></li>
+                        <li><div class="progress percent80"></div><strong>OOP</strong></li>
+                        <li><div class="progress percent80"></div><strong>System Debugging</strong></li>
+                        <li><div class="progress percent80"></div><strong>Unit/Integration Testing</strong></li>
+                        <li><div class="progress percent80"></div><strong>Multithreading</strong></li>
+                        <li><div class="progress percent80"></div><strong>Low-latency Systems</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- Projects Section -->
+        <section id="projects" class="s-works">
+            <div class="row">
+                <div class="column lg-12">
+                    <h2 class="section-title animate-on-load">Projects</h2>
+                </div>
+            </div>
+            <div class="row folio-list block-lg-one-half block-stack-on-550 animate-on-load">
+                <div class="column">
+                    <div class="folio-item">
+                        <div class="folio-item__info">
+                            <h4 class="folio-item__title">Multithreaded Stock Exchange Simulator</h4>
+                            <span class="cat">C++ | 2024</span>
+                        </div>
+                        <div class="folio-item__caption">
+                            <ul>
+                                <li>Simulated a low-latency trading environment with a multithreaded order matching engine.</li>
+                                <li>Used mutex locks and queues to safely manage concurrent order processing.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="folio-item">
+                        <div class="folio-item__info">
+                            <h4 class="folio-item__title">System Monitor CLI Tool</h4>
+                            <span class="cat">Python, Bash | 2023</span>
+                        </div>
+                        <div class="folio-item__caption">
+                            <ul>
+                                <li>Created a UNIX-based command-line tool to monitor and log system resource usage in real time.</li>
+                                <li>Ensured cross-platform compatibility and robust error handling.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="folio-item">
+                        <div class="folio-item__info">
+                            <h4 class="folio-item__title">Course Dependency Visualizer</h4>
+                            <span class="cat">Java, Graph Theory | 2023</span>
+                        </div>
+                        <div class="folio-item__caption">
+                            <ul>
+                                <li>Designed an educational tool that maps course prerequisites using Directed Acyclic Graphs.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section -->
+        <section id="contact" class="s-footer">
+            <div class="row s-footer__contact-header">
+                <div class="column lg-12">
+                    <h2 class="section-title animate-on-load">Get In Touch</h2>
+                    <p class="text-huge-title animate-on-load">I'm always open to new opportunities and collaborations. Whether you're interested in discussing a potential project, seeking advice on a technical issue, or just want to chat about the latest in software development, I'm here to help. Feel free to reach out through any of the provided contact methods, and I'll get back to you as soon as possible.</p>
+                </div>
+            </div>
+            <div class="row s-footer__contact-content">
+                <div class="column lg-5 md-6 stack-on-900 left-block">
+                    <div class="s-footer__buttons">
+                        <a href="mailto:darrenbonjour92@gmail.com" class="btn btn--primary">Email Me</a>
+                        <a href="CS_RESUMESWE(1).pdf" class="btn btn--stroke" target="_blank">Download Resume</a>
+                    </div>
+                </div>
+                <div class="column lg-4 md-5 stack-on-900 right-block">
+                    <div class="s-footer__contact-info">
+                        <h2 class="text-subtitle">Contact Info</h2>
+                        <ul class="link-list">
+                            <li><a href="mailto:darrenbonjour92@gmail.com">darrenbonjour92@gmail.com</a></li>
+                        </ul>
+                    </div>
+                    <div class="s-footer__social">
+                        <h2 class="text-subtitle">Connect</h2>
+                        <ul class="link-list">
+                            <li><a href="https://www.linkedin.com/in/darren-bonjour03/" target="_blank">LinkedIn</a></li>
+                            <li><a href="https://github.com/darrenbon03" target="_blank">GitHub</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ss-go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #64ffda;"><path d="M6 4h12v2H6zm5 10v6h2v-6h5l-6-6-6 6z"></path></svg>
+                </a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
