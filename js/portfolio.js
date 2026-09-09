@@ -1,20 +1,82 @@
 'use strict';
 
+(function initTheme() {
+  var root = document.documentElement;
+  var storageKey = 'darren-portfolio-theme';
+  var savedTheme = null;
+
+  try {
+    savedTheme = window.localStorage.getItem(storageKey);
+  } catch (error) {
+    savedTheme = null;
+  }
+
+  var theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'dark';
+  root.dataset.theme = theme;
+
+  function updateThemeColor(nextTheme) {
+    var themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) themeMeta.setAttribute('content', nextTheme === 'light' ? '#f5f5f2' : '#0b0d0c');
+  }
+
+  function updateButton(button, nextTheme) {
+    if (!button) return;
+    var isLight = nextTheme === 'light';
+    button.setAttribute('aria-pressed', String(isLight));
+    button.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    button.setAttribute('title', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+  }
+
+  function applyTheme(nextTheme, persist) {
+    root.dataset.theme = nextTheme;
+    updateThemeColor(nextTheme);
+    updateButton(document.querySelector('.theme-toggle'), nextTheme);
+    if (persist) {
+      try {
+        window.localStorage.setItem(storageKey, nextTheme);
+      } catch (error) {
+        // Theme still works when storage is unavailable.
+      }
+    }
+  }
+
+  updateThemeColor(theme);
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var nav = document.querySelector('.header-inner nav');
+    if (!nav || nav.querySelector('.theme-toggle')) return;
+
+    var button = document.createElement('button');
+    button.className = 'theme-toggle';
+    button.type = 'button';
+    button.innerHTML = '<span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__sun">☀</span><span class="theme-toggle__moon">☾</span><span class="theme-toggle__thumb"></span></span>';
+
+    var contactLink = nav.querySelector('.nav-contact');
+    if (contactLink) nav.insertBefore(button, contactLink);
+    else nav.appendChild(button);
+
+    updateButton(button, root.dataset.theme || 'dark');
+    button.addEventListener('click', function () {
+      applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light', true);
+    });
+  });
+}());
+
 (function loadPremiumLayer() {
   var css = document.createElement('link');
   css.rel = 'stylesheet';
-  css.href = 'css/premium.css?v=3';
+  css.href = 'css/premium.css?v=4';
   document.head.appendChild(css);
 
   document.querySelectorAll('link[rel~="icon"], link[rel="shortcut icon"]').forEach(function (node) {
-    node.href = 'favicon.svg?v=3';
+    node.href = 'favicon.svg?v=4';
     node.type = 'image/svg+xml';
   });
   if (!document.querySelector('link[href*="favicon.svg"]')) {
     var icon = document.createElement('link');
     icon.rel = 'icon';
     icon.type = 'image/svg+xml';
-    icon.href = 'favicon.svg?v=3';
+    icon.href = 'favicon.svg?v=4';
     document.head.appendChild(icon);
   }
 }());
